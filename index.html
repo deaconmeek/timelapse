@@ -8,46 +8,67 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     </head>
     <body>
-        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478">
-          <source src="cartier_nights700.mp4" type="video/mp4" />
-          <img src="cartier_nights700.png" />
-        </video>
-        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478">
-          <source src="cartier_sunsets_badend700.mp4" type="video/mp4" />
-          <img src="cartier_sunsets_badend700.png" />
-        </video>
-        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478">
-          <source src="chalet_day700.mp4" type="video/mp4" />
-          <img src="chalet_day700.png" />
-        </video>
-        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478">
-          <source src="chalet_late700.mp4" type="video/mp4" />
-          <img src="chalet_late700.png" />
-        </video>
-        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478">
-          <source src="chalet_sunset700.mp4" type="video/mp4" />
-          <img src="chalet_sunset700.png" />
-        </video>
-        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478">
-          <source src="clocks700.mp4" type="video/mp4" />
-          <img src="clocks700.png" />
-        </video>
-        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478">
-          <source src="flights400.mp4" type="video/mp4" />
-          <img src="flights400.png" />
-        </video>
-        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478">
-          <source src="oriental.mp4" type="video/mp4" />
-          <img src="oriental.png" />
-        </video>
-        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478">
-          <source src="shadows_and_moon700.mp4" type="video/mp4" />
-          <img src="shadows_and_moon700.png" />
-        </video>
+        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478" data-src="cartier_nights700.mp4"></video>
+        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478" data-src="cartier_sunsets_badend700.mp4"></video>
+        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478" data-src="chalet_day700.mp4"></video>
+        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478" data-src="chalet_late700.mp4"></video>
+        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478" data-src="chalet_sunset700.mp4"></video>
+        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478" data-src="clocks700.mp4"></video>
+        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478" data-src="flights400.mp4"></video>
+        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478" data-src="oriental.mp4"></video>
+        <video style="width: 100%; height: auto;" autoplay="autoplay" loop="loop" muted="" width="640" height="478" data-src="shadows_and_moon700.mp4"></video>
+        <script>
+          let unloadedVideos = [];
+          function lazyLoad() {
+            for (const [i, el] of unloadedVideos.entries()) {
+              if (isInViewport(el)) {
+                el.setAttribute('src', el.getAttribute('data-src'));
+                unloadedVideos.splice(i, 1);
+              }
+            }
+          }
+          function isInViewport(el){
+            const rect = el.getBoundingClientRect();
+            return (
+              rect.bottom >= 0 && 
+              rect.right >= 0 && 
+
+              rect.top <= (
+              window.innerHeight || 
+              document.documentElement.clientHeight) && 
+
+              rect.left <= (
+              window.innerWidth || 
+              document.documentElement.clientWidth)
+            );
+          }
+
+          function throttle(fn, wait) {
+            var time = Date.now();
+            return function() {
+              if ((time + wait - Date.now()) < 0) {
+                fn();
+                time = Date.now();
+              }
+            }
+          }
+          function init() {
+            unloadedVideos = [...document.getElementsByTagName('video')];
+            lazyLoad();
+            window.addEventListener('scroll', throttle(lazyLoad, 1000));
+          }
+          if (document.readyState !== 'loading') {
+            init();
+          } else {
+            document.addEventListener('DOMContentLoaded', function () {
+              init();
+            });
+          }
+        </script>
         <script>
             window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
             ga('create','UA-113501052-1','auto');ga('send','pageview')
         </script>
-        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+        <script data-src="https://www.google-analytics.com/analytics.js" async defer></script>
     </body>
 </html>
